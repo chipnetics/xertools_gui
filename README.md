@@ -23,6 +23,8 @@ The graphical frontend is written in Dart + Flutter.
 
 ### For building in Windows, you need Visual Studio with "Desktop Development with C++" workload installed (~8GB)
 
+*NB: Visual Studio Community edition is sufficient.*
+
 `https://visualstudio.microsoft.com/`
 
 ### For building in Linux, typical gcc toolchain...

@@ -47,6 +47,7 @@ app.*.map.json
 /android/app/release
 
 # Local EXE
+xerdump
 xerdiff
 xertask
 xerpred

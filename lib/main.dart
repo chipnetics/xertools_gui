@@ -6,10 +6,19 @@ import 'dropdown.dart';
 import 'model.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 void main() {
   runApp(const MyApp());
+  doWhenWindowReady(() {
+    final win = appWindow;
+    //const initialSize = Size(600, 450);
+    //win.minSize = initialSize;
+    //win.size = initialSize;
+    win.alignment = Alignment.center;
+    win.title = "XERtools Manager";
+    win.show();
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'XERtools',
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.lightBlue[800],
