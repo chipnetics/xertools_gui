@@ -17,9 +17,17 @@ The graphical frontend is written in Dart + Flutter.
 
 `git clone https://github.com/chipnetics/xertools_gui.git`
 
-### Download Flutter + Dart
+### Download Flutter + Dart SDK
 
 `https://docs.flutter.dev/get-started/install`
+
+### For building in Windows, you need Visual Studio with "Desktop Development with C++" workload installed (~8GB)
+
+`https://visualstudio.microsoft.com/`
+
+### For building in Linux, typical gcc toolchain...
+
+`sudo apt install build-essential` (or similar, depending on flavor)
 
 ### Compile with flutter with the appropriate command line options...
 
