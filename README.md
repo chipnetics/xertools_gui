@@ -1,16 +1,30 @@
-# xergui
+![image](assets/logo.png)
+# Graphical Interface for Primavera XER Tools
 
-A new Flutter project.
+A graphical front-end for the XERtools toolkit which can be found [here](https://github.com/chipnetics/xertools).
 
-## Getting Started
+# Project Motivation
 
-This project is a starting point for a Flutter application.
+For users who are not very comfortable with the command line, or don't need to automate execution of the toolkit executables with batch scripts and prefer to run things visually.
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Compiling
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The graphical frontend is written in Dart + Flutter.
+
+### Clone this repository
+
+`git clone https://github.com/chipnetics/xertools_gui.git`
+
+### Download Flutter + Dart
+
+`https://docs.flutter.dev/get-started/install`
+
+### Compile with flutter with the appropriate command line options...
+
+#### Building in Linux environment
+`flutter build linux`
+
+#### Building in Windows environment
+`flutter build windows`
