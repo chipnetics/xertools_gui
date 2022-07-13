@@ -1,3 +1,6 @@
+// Copyright (c) 2022 jeffrey -at- ieee.org. All rights reserved.
+// Use of this source code (/program) is governed by a GPLV3 license,
+// that can be found in the LICENSE file. Do not remove this header.
 import 'package:flutter/material.dart';
 import 'reorderswipe.dart';
 import 'elevatedbutton.dart';
