@@ -27,7 +27,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -276,6 +275,49 @@ class _MyHomePageState extends State<MyHomePage> {
      setState(() {});
   }
 
+  _cbCheckUpdates() async
+  {
+   
+    void _updateSnack(String util) async {
+
+       Directory current = Directory.current;
+       String retString = "";
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Updating $util!"),duration: Duration(milliseconds: 500)));
+
+       try {
+        if (Platform.isWindows) {
+          retString =await execProcess("${current.path}/$util.exe",["-u","-z"]);
+        }
+        else {
+          retString =await execProcess("${current.path}/$util",["-u","-z"]);
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Done updating $util!"),duration: Duration(milliseconds: 500)));
+        print(retString);
+      }
+      on Exception {
+              showDialog<String>(context: context, builder: (BuildContext context) => AlertDialog(
+            title: const Text("Error"),
+            content: Text("Could not find tool '$util'.\nEnsure it is in the same folder."),
+          ));
+          xerpredWorking = false;
+          setState(() {});
+          return;
+    }
+      
+ 
+    }
+
+    _updateSnack("xerdump");
+    _updateSnack("xertask");
+    _updateSnack("xerpred");
+    _updateSnack("xerdiff");
+
+    
+     //setState(() {});
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -290,7 +332,6 @@ class _MyHomePageState extends State<MyHomePage> {
     AElevatedButton buttonXERpred =  AElevatedButton(buttonText:"XER Pred",onTap:_cbXERpred, buttonTooltip: "Output a list of every task code with its predecessors, descending recursively to the specified depth",);
     AElevatedButton buttonXERdiff =  AElevatedButton(buttonText:"XER Diff",onTap:_cbXERdiff, buttonTooltip: "Identify what task codes have been added or deleted between 2 or more XER files");
     
-   
     ADropDown ddPredDepth = ADropDown();
     XERList ttl = XERList();
 
@@ -307,7 +348,11 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           PopupMenuButton(itemBuilder: (BuildContext context) {
             return [
-              const PopupMenuItem(child: Text('Check for Updates'))
+              PopupMenuItem(
+                    child: Text("Check for Updates"),
+                    onTap: () {
+                      _cbCheckUpdates();
+                    }),
             ];
           })
         ],
