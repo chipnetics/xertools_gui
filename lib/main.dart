@@ -1,6 +1,8 @@
 // Copyright (c) 2022 jeffrey -at- ieee.org. All rights reserved.
 // Use of this source code (/program) is governed by a GPLV3 license,
 // that can be found in the LICENSE file. Do not remove this header.
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'reorderswipe.dart';
 import 'elevatedbutton.dart';
@@ -49,7 +51,6 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 String activeFolder = ".";
 
 List<XER> popXERs(String dir) {
@@ -61,9 +62,8 @@ List<XER> popXERs(String dir) {
     }
     return xerStructs;
 }
-
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> currXERPaths = [];
+ 
   bool xerdumpWorking = false;
   bool xertaskWorking = false;
   bool xerpredWorking = false;
@@ -76,7 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
   LabeledCheckbox cXERtaskAnal = LabeledCheckbox(label: "Analytics Mode");
   LabeledCheckbox cXERpredDrive = LabeledCheckbox(label: "Output Drivers");
   LabeledCheckbox cXERpredPRed = LabeledCheckbox(label: "Output Predecessors");
-  
+
+  XERList ttl = XERList();
+
   //////////////////
   /// CALLBACKS ////
   //////////////////
@@ -84,6 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
   {
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
     activeFolder = selectedDirectory ?? ".";
+    ttl.items = popXERs(activeFolder);
+    ttl.forceRedraw.value++;
     setState(() {});
   }
 
@@ -92,10 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
     Directory current = Directory.current;
     String retString = "";
 
-    xerdumpWorking = true;
-    setState(() {});
+    setState(() {
+      xerdumpWorking = true;
 
-    List<String> params = currXERPaths;
+    });
+
+    List<String> params = ttl.currentPaths();
     if (cXERdumpSQL.value) {
       params.add("-s");
     } 
@@ -149,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
     xertaskWorking = true;
     setState(() {});
 
-    List<String> params = currXERPaths;
+    List<String> params = ttl.currentPaths();
     if (cXERtaskAnal.value) {
       params.add("-a");
     } 
@@ -192,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
     xerdiffWorking = true;
     setState(() {});
 
-    List<String> params = currXERPaths;
+    List<String> params = ttl.currentPaths();
     
    try {
         if (Platform.isWindows) {
@@ -232,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
     xerpredWorking = true;
     setState(() {});
 
-    List<String> params = currXERPaths;
+    List<String> params = ttl.currentPaths();
     if (cXERpredDrive.value) {
       params.add("-d");
     } 
@@ -272,7 +278,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _cbReload() async
   {
-     setState(() {});
+    ttl.items = popXERs(activeFolder);
+    ttl.forceRedraw.value++;
   }
 
   _cbCheckUpdates() async
@@ -313,11 +320,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _updateSnack("xertask");
     _updateSnack("xerpred");
     _updateSnack("xerdiff");
-
-    
-     //setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -331,16 +334,13 @@ class _MyHomePageState extends State<MyHomePage> {
     AElevatedButton buttonXERtask =  AElevatedButton(buttonText:"XER Task",onTap:_cbXERtask, buttonTooltip: "Transform XER TASK data, and ajoin it to the PROJECT and CALENDAR tables. \nOr perform a detailed analysis on the XER TASK table.");
     AElevatedButton buttonXERpred =  AElevatedButton(buttonText:"XER Pred",onTap:_cbXERpred, buttonTooltip: "Output a list of every task code with its predecessors, descending recursively to the specified depth",);
     AElevatedButton buttonXERdiff =  AElevatedButton(buttonText:"XER Diff",onTap:_cbXERdiff, buttonTooltip: "Identify what task codes have been added or deleted between 2 or more XER files");
-    
     ADropDown ddPredDepth = ADropDown();
-    XERList ttl = XERList();
-
+    
     //////////////
     /// STATES ///
     //////////////
-    ttl.items = popXERs(activeFolder);
     ddPredDepth.dropDownText = "Generation Depth";
-    currXERPaths = ttl.currentPaths();
+    
 
     return Scaffold(
       appBar: AppBar(
