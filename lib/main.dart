@@ -60,6 +60,7 @@ List<XER> popXERs(String dir) {
     for(FileSystemEntity s in xerFiles) {
       xerStructs.add(XER(name: s.uri.pathSegments.last,modified: s.statSync().modified.toString(), fullpath: s.path));
     }
+    xerStructs.sort((a, b) => a.name.compareTo(b.name));
     return xerStructs;
 }
 class _MyHomePageState extends State<MyHomePage> {
@@ -321,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _updateSnack("xerpred");
     _updateSnack("xerdiff");
   }
-
+  
   @override
   Widget build(BuildContext context) {
 
